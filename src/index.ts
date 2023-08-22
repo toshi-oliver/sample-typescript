@@ -1,10 +1,12 @@
+type Mode = 'normal' | 'hard'
+
 class HitAndBlow {
     private readonly answerSource = ['0','1','2','3','4','5','6','7','8','9']
     private answer : string[] = []
     private tryCount = 0
-    private mode: 'normal' | 'hard'
+    private mode: Mode
 
-    constructor(mode: 'normal' | 'hard') {
+    constructor(mode: Mode) {
         this.mode = mode
     }
 
