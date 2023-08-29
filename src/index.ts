@@ -7,7 +7,7 @@ class HitAndBlow {
     private mode: Mode = 'normal'
 
     async setting() {
-        this.mode = await promptInput('モードを入力してください。') as Mode
+        this.mode = await promptSelect('モードを入力してください。', ['normal', 'hard']) as Mode
         const answerLength = this.getAnswerLength()
 
         while (this.answer.length < answerLength) {
@@ -89,12 +89,31 @@ const printLine = (text: string, breakline: boolean = true) => {
     process.stdout.write(text + (breakline ? '\n' : ''))
 }
 
+const readline = async () => {
+    const input: string = await new Promise((resolve) => process.stdin.once('data', (data) => resolve(data.toString())))
+    return input.trim()
+}
+
 //ユーザーに質問を投げかけ入力してもらう関数
 const promptInput = async (text: string) => {
     printLine(`\n${text}\n`, false)
-    const input: string = await new Promise((resolve) => process.stdin.once('data', (data) => resolve(data.toString())))
 
-    return input.trim()
+    return readline()
+}
+
+const promptSelect = async (text: string, values: readonly string[]): Promise<string> => {
+    printLine(`\n${text}`)
+    values.forEach((value) => {
+        printLine(`- ${value}`)
+    })
+    printLine(`> `,false)
+
+    const input = await readline()
+    if (values.includes(input)) {
+        return input
+    } else {
+        return promptSelect(text, values)
+    }
 }
 
 (async ()  => {
