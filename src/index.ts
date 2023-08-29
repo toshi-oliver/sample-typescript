@@ -23,7 +23,7 @@ class HitAndBlow {
         const answerLength = this.getAnswerLength()
         const inputArr = (await promptInput(`「,」区切りで${answerLength}つの数字を入力してください`)).split('')
 
-        if (!this.validate(inputArr)) {
+        if (this.validate(inputArr)) {
             printLine('無効な入力です。')
             await this.play()
             return
